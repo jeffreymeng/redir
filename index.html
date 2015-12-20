@@ -13,7 +13,8 @@ $("#container").hide();
 var query = window.location.hash.substring(1)
 if (query !== null) {
 	$("#1").show()
-	$("#query").value = query
+	$("#query").html('<p>' + query + '</p>')
+	alert('hi')
 
 }	else {
 	$("#container").show();
@@ -28,7 +29,6 @@ if (query !== null) {
 <div class="container" id="container">
 <h1>Welcome to Redirect, Jeffrey's link shortner</h1>
 <p>redirect is a link shortner
-
 </div>
 </body>
 </html>
