@@ -15,7 +15,7 @@
                 results = regex.exec(location.search);
             return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-    var name = window.location.hash.replace("#").replace("undefined")
+    var name = window.location.hash.replace("#").replace("undefined").replace(undefined)
     var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
         fb.once("value", function(snapshot) {
         if (snapshot.child(name).val() !== null) {
