@@ -4,11 +4,12 @@
 
     <script>
         var name = window.location.hash.substring(1)
-    var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
-        fb.once("value", function(snapshot) {
-        if (snapshot.child(name).val() !== null) {
-            window.location.href = snapshot.child(name).val();
-        } else {
+        var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+        if (name !== null || name !== "") {
+            fb.once("value", function(snapshot) {
+            if (snapshot.child(name).val() !== null) {
+                window.location.href = snapshot.child(name).val();
+            }
         }
         
     });
