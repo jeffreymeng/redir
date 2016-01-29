@@ -16,50 +16,65 @@
         }
 
     </script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-            <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 
     </head>
     <body>
         <div class="container">
-            <div class="com-lg-12">
+
+            <div class="col-lg-12">
                 <h1>Redirect</h1>
                 <p class="text-muted">Jeffrey's link redirection service.</p>
                 <div id="create">
                     <p>Welcome to redir</p>
                     <p>Create a redirection link below:</p>
+                    
                     <form>
-                        <input type="text" placeholder="Please enter the name of your redirection or leave this field blank to auto generate a special short link" id="n" class="form-control">
+                        <label for="basic-url">Choose a URL</label>
+                        <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon3">http://jmls.tk#</span>
+                          <input type="text" class="form-control" id="url" placeholder="url" aria-describedby="basic-addon3">
+                        </div>
                         <br>
-                        <input type="text" placeholder="Please enter the link to redirect to" id="l" class="form-control">
+                        <label for="link">Link to redirect to</label>
+                        <input type="text" placeholder="Please enter the link to redirect to" id="link" class="form-control">
                         <br>
+                        <p id="error" class="text-danger text"></p>
+                        <p id="sucuess" class="text-sucuess text"></p>
+
                         <button id="submit" class="form-control" style="background-color:green;color:white;">Submit</button>
                     </form>
                 </div>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+                <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
                 <script> 
                 /* global Firebase */
             var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
             var doc = jQuery(document);
             doc.ready(setup);
-            function checkIfUserExists(id, callback) {
+            function checkIfUserExists(id, link, callback) {
               fb.child(id).once('value', function(snapshot) {
                 var exists = (snapshot.val() !== null);
-                callback(exists, id);
+                callback(exists, id, link);
               });
             }
 
             function setup() {
-                var button;
-                button = $("#submit");
-                button.click(send);
-            }
-
-
-            function send() {
-                var topush = fulltime + id + message;
-                fb.push(topush);
-                $('textarea').val('');
+                $("#submit").click(function(){
+                    var url = $("#url").val();
+                    var link = $("#link").val();
+                    checkIfUserExists(url, link, function(exists, id, link){
+                        if (exists) {
+                            $("#error").val("Your url already exists!")
+                        } else {
+                            fb.child(url).set(link);
+                            $("#sucuess").val("Sucuess! The link <b>http://jmls.tk#" + link + "</b> now redirects to <b>" + id + "</b>.")
+                            
+                        }
+                    });
+                    
+                });
             }
 
 
