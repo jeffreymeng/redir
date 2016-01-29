@@ -1,6 +1,5 @@
 <html>
     <head>
-        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script>
@@ -10,7 +9,7 @@
         if (name !== null && name !== "") {
             fb.once("value", function(snapshot) {
                 if (snapshot.child(name).val() !== null) {
-                    $("head").append('<meta http-equiv="refresh" content="0; URL=\'' + snapshot.child(name).val() + '\'" />')
+                    document.getElementsByTagName("head").append('<meta http-equiv="refresh" content="0; URL=\'' + snapshot.child(name).val() + '\'" />')
 
                 }
             });
@@ -19,6 +18,7 @@
     </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
     </head>
     <body>
