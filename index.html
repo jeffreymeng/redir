@@ -1,20 +1,22 @@
 <html>
     <head>
-        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
+        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script>
-        var name = window.location.hash.substring(1)
+        /* global Firebase */
+        var name = window.location.hash.substring(1);
         var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
         if (name !== null && name !== "") {
             fb.once("value", function(snapshot) {
                 if (snapshot.child(name).val() !== null) {
-                    window.location.href = snapshot.child(name).val();
+                    $("head").append('<meta http-equiv="refresh" content="0; URL=\'' + snapshot.child(name).val() + '\'" />')
+
                 }
             });
         }
 
     </script>
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -28,36 +30,37 @@
                     <p>Welcome to redir</p>
                     <p>Create a redirection link below:</p>
                     <form>
-                        <input type="text" placeholder="Please enter the name of your redirection" id="n" class="form-control">
+                        <input type="text" placeholder="Please enter the name of your redirection or leave this field blank to auto generate a special short link" id="n" class="form-control">
                         <br>
                         <input type="text" placeholder="Please enter the link to redirect to" id="l" class="form-control">
                         <br>
                         <button id="submit" class="form-control" style="background-color:green;color:white;">Submit</button>
                     </form>
                 </div>
-                <script>       
-                    var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+                <script> 
+                /* global Firebase */
+            var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+            var doc = jQuery(document);
+            doc.ready(setup);
+            function checkIfUserExists(id, callback) {
+              fb.child(id).once('value', function(snapshot) {
+                var exists = (snapshot.val() !== null);
+                callback(exists, id);
+              });
+            }
 
-                    var doc = jQuery(document);
-                    doc.ready(setup);
+            function setup() {
+                var button;
+                button = $("#submit");
+                button.click(send);
+            }
 
 
-                    function setup() {
-                        var button;
-                        button = jQuery("#submit");
-                        button.click(send);
-                    }
-
-
-                    function send() {
-                        var name = $("#n").val();
-                        var input = $("l").val();
-                        if ( !(fb.child(name).exists()) ) {
-                            fb.child(name).set(input);
-                        } else {
-                            alert("your name was taken, please try again")
-                        }
-                    }
+            function send() {
+                var topush = fulltime + id + message;
+                fb.push(topush);
+                $('textarea').val('');
+            }
 
 
                 </script>
