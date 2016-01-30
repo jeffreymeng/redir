@@ -60,7 +60,7 @@
                 </script> 
                 <script>
                 window.onhashchange = function() {
-                    setTimeout(function(){window.location.reload();}, 500);
+                    setTimeout(function(){window.location.reload();}, 100);
                 }
                     /* global Firebase */
                 var fb = new Firebase("https://redirect.firebaseio.com");
@@ -81,7 +81,7 @@
                                 $("#error").html("Your url already exists!")
                             } else {
                                 fb.child(url).set(link);
-                                $("#success").html("Sucuess! The link <b>http://jmls.tk#" + link + "<\/b> now redirects to <b>" + id + "<\/b>.")
+                                $("#success").html("Sucuess! The link <b>http://jmls.tk#" + url + "<\/b> now redirects to <b>" + link + "<\/b>.")
                                 
                             }
                         });
