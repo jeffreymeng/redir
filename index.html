@@ -59,9 +59,11 @@
                 "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
                 </script> 
                 <script>
-    
+                window.onhashchange = function() {
+                    setTimeout(function(){window.location.reload();}, 500);
+                }
                     /* global Firebase */
-                var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+                var fb = new Firebase("https://redirect.firebaseio.com");
                 var doc = jQuery(document);
                 doc.ready(setup);
                 function checkIfUserExists(id, link, callback) {
