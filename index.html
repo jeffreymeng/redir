@@ -1,31 +1,33 @@
+<!DOCTYPE html>
 <html>
     <head>
-
-        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+    
+        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
+        </script>
         <script>
-        /* global Firebase */
-        var name = window.location.hash.substring(1);
-        var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
-        if (name !== null && name !== "") {
-            fb.once("value", function(snapshot) {
-                if (snapshot.child(name).val() !== null) {
-                    var meta = document.createElement('meta');
-                    meta.httpEquiv = "refresh";
-                    meta.content = "0; URL=" + snapshot.child(name).val();
-                    document.getElementsByTagName('head')[0].appendChild(meta);
-
-                }
-            });
-        }
-
-    </script>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-
+            /* global Firebase */
+            var name = window.location.hash.substring(1);
+            var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+            if (name !== null && name !== "") {
+                fb.once("value", function(snapshot) {
+                    if (snapshot.child(name).val() !== null) {
+                        var meta = document.createElement('meta');
+                        meta.httpEquiv = "refresh";
+                        meta.content = "0; URL=" + snapshot.child(name).val();
+                        document.getElementsByTagName('head')[0].appendChild(meta);
+    
+                    }
+                });
+            }
+    
+        </script>
+        <link href=
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        rel="stylesheet">
+        <title></title>
     </head>
     <body>
         <div class="container">
-
             <div class="col-lg-12">
                 <h1>Redirect</h1>
                 <p class="text-muted">Jeffrey's link redirection service.</p>
@@ -35,54 +37,56 @@
                     <div>
                         <label for="basic-url">Choose a URL</label>
                         <div class="input-group">
-                          <span class="input-group-addon" id="basic-addon3">http://jmls.tk#</span>
-                          <input type="text" class="form-control" id="url" placeholder="url" aria-describedby="basic-addon3">
-                        </div>
-                        <br>
-                        <label for="link">Link to redirect to</label>
-                        <input type="text" placeholder="Please enter the link to redirect to" id="link" class="form-control">
-                        <br>
-                        <p id="error" class="text-danger text"></p>
-                        <p id="success" class="text-success text"></p>
-                        <button id="sub" class="form-control" style="background-color:green;color:white;">Submit</button>
+                            <span class="input-group-addon" id=
+                            "basic-addon3">http://jmls.tk#</span>
+                            <input aria-describedby="basic-addon3" class=
+                            "form-control" id="url" placeholder="url" type="text">
+                        </div><br>
+                        <label for="link">Link to redirect to</label> <input class=
+                        "form-control" id="link" placeholder=
+                        "Please enter the link to redirect to" type="text"><br>
+                        <p class="text-danger text" id="error"></p>
+                        <p class="text-success text" id="success">
+                        </p><button class="form-control" id="sub" style=
+                        "background-color:green;color:white;" onclick="setup()">Submit</button>
                     </div>
                 </div>
-                <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-                <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-
-
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-                <script> 
-                /* global Firebase */
-            var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
-            var doc = jQuery(document);
-            doc.ready(setup);
-            function checkIfUserExists(id, link, callback) {
-              fb.child(id).once('value', function(snapshot) {
-                var exists = (snapshot.val() !== null);
-                callback(exists, id, link);
-              });
-            }
-
-            function setup() {
-                $("#sub").click(function(){
-                    var url = $("#url").val();
-                    var link = $("#link").val();
-                    checkIfUserExists(url, link, function(exists, id, link){
-                        if (exists) {
-                            $("#error").val("Your url already exists!")
-                        } else {
-                            fb.child(url).set(link);
-                            $("#success").val("Sucuess! The link <b>http://jmls.tk#" + link + "</b> now redirects to <b>" + id + "</b>.")
-                            
-                        }
-                    });
+                <script src="http://code.jquery.com/jquery-1.11.3.min.js">
+                </script> 
+                <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
+                </script> 
+                <script src=
+                "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+                </script> 
+                <script>
+    
+                    /* global Firebase */
+                var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
+                var doc = jQuery(document);
+                doc.ready(setup);
+                function checkIfUserExists(id, link, callback) {
+                  fb.child(id).once('value', function(snapshot) {
+                    var exists = (snapshot.val() !== null);
+                    callback(exists, id, link);
+                  });
+                }
+    
+                function setup() {
+                        var url = $("#url").val();
+                        var link = $("#link").val();
+                        checkIfUserExists(url, link, function(exists, id, link){
+                            if (exists) {
+                                $("#error").val("Your url already exists!")
+                            } else {
+                                fb.child(url).set(link);
+                                $("#success").val("Sucuess! The link <b>http://jmls.tk#" + link + "<\/b> now redirects to <b>" + id + "<\/b>.")
+                                
+                            }
+                        });
                     
-                });
-            }
-
-
+                }
+    
+    
                 </script>
             </div>
         </div>
