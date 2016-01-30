@@ -7,8 +7,8 @@
         <script>
             /* global Firebase */
             var name = window.location.hash.substring(1);
-            var fb = new Firebase("https://jeffreymeng.firebaseio.com/redir");
-            if (name !== null && name !== "") {
+            var fb = new Firebase("https://redirect.firebaseio.com");
+            if (name !== null && name !== "" && name !== undefined) {
                 fb.once("value", function(snapshot) {
                     if (snapshot.child(name).val() !== null) {
                         var meta = document.createElement('meta');
