@@ -76,10 +76,10 @@
                         var link = $("#link").val();
                         checkIfUserExists(url, link, function(exists, id, link){
                             if (exists) {
-                                $("#error").val("Your url already exists!")
+                                $("#error").html("Your url already exists!")
                             } else {
                                 fb.child(url).set(link);
-                                $("#success").val("Sucuess! The link <b>http://jmls.tk#" + link + "<\/b> now redirects to <b>" + id + "<\/b>.")
+                                $("#success").html("Sucuess! The link <b>http://jmls.tk#" + link + "<\/b> now redirects to <b>" + id + "<\/b>.")
                                 
                             }
                         });
