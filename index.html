@@ -43,7 +43,7 @@
                         <input type="text" placeholder="Please enter the link to redirect to" id="link" class="form-control">
                         <br>
                         <p id="error" class="text-danger text"></p>
-                        <p id="sucuess" class="text-sucuess text"></p>
+                        <p id="success" class="text-success text"></p>
                         <button id="sub" class="form-control" style="background-color:green;color:white;">Submit</button>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                             $("#error").val("Your url already exists!")
                         } else {
                             fb.child(url).set(link);
-                            $("#sucuess").val("Sucuess! The link <b>http://jmls.tk#" + link + "</b> now redirects to <b>" + id + "</b>.")
+                            $("#success").val("Sucuess! The link <b>http://jmls.tk#" + link + "</b> now redirects to <b>" + id + "</b>.")
                             
                         }
                     });
