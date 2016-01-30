@@ -64,8 +64,7 @@
                 }
                     /* global Firebase */
                 var fb = new Firebase("https://redirect.firebaseio.com");
-                var doc = jQuery(document);
-                doc.ready(setup);
+
                 function checkIfUserExists(id, link, callback) {
                   fb.child(id).once('value', function(snapshot) {
                     var exists = (snapshot.val() !== null);
