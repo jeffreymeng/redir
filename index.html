@@ -35,6 +35,7 @@
                     <p>Welcome to JMLS</p>
                     <p>Create a redirection link below:</p>
                     <div>
+                        
                         <label for="basic-url">Choose a URL</label>
                         <div class="input-group">
                             <span class="input-group-addon" id=
@@ -42,6 +43,9 @@
                             <input aria-describedby="basic-addon3" class=
                             "form-control" id="url" placeholder="url" type="text">
                         </div><br>
+                        <p id="console-text" class="text text-success" style="display:none;">Hi,<br> 
+                        Type in a command or create a url normally. type /admin logout to logout or /help for help</p>
+                        <p id="console" class="text-muted text"></p>
                         <label for="link">Link to redirect to</label> <input class=
                         "form-control" id="link" placeholder=
                         "Please enter the link to redirect to" type="text"><br>
@@ -71,22 +75,101 @@
                     callback(exists, id, link);
                   });
                 }
-    
+                // /admin login
+                // > please enter username:
+                //   jmeng
+                // > please enter password:
+                //   ********* (password)
+                // > password incorrect, please try again:
+                //   ***************** (superneatpassword)
+                // > password accepted, hi Jeffrey
+                // /list
+                // > List of all redirects
+                // /overwrite hi jeffreyisawesome
+                // >overwrite complete.
+                // /view hi
+                // > hi : www.etc.com
+                // /delete hi
+                // > hi deleted
+                // /admin logout
+                // >you are logged out
+                $(document).keypress(function(e) {
+                    if(e.which == 13) {
+                        setup();
+                    }
+                });
+                function console(link) {
+                    function printToTerminal(p) {
+                        $("#console").append(p + "<br>");
+                    }
+                    var command = link.substring(1).split(" ");
+                        if (command[0] === "authStatus" || command[0] === "authState") {
+                            printToTerminal((fb.getAuth() !== null ? "You are logged in as: " + fb.getAuth().password.email : "You are not logged in."))
+                        }
+                        if (fb.getAuth() === null) {
+                            if (command[0] === "visibility") {
+                                if (command[1] === "none" || command[1] === "password") {
+                                    $("#link").attr("type", "password");
+                                } else if (command[1] !== null) {
+                                    $("#link").attr("type", "text")
+                                }
+                            }
+                            if (command[0] === "login") {
+                                if (command[1] === null || command[2] === null) {
+                                    printToTerminal("Error: You failed to specify any username or password(the correct usage should by: /login <username> <password> )")
+                                } else {
+                                    fb.authWithPassword({
+                                      email    : command[1],
+                                      password : command[2]
+                                    }, function(error, authData) {
+                                      if (error) {
+                                        printToTerminal("Login Failed! " + error);
+                                      } else {
+                                        printToTerminal("you are now logged in as: " + authData.password.email);
+                                      }
+                                    });
+                                    
+                                }
+                            }
+                        } else if (fb.getAuth !== null) {
+                            if (command[0] === "logout") {
+                                fb.unauth();
+                                printToTerminal("You are now logged out")
+                            } else if (command[0] === "list") {
+                                fb.once("value", function(snapshot) {
+                                  snapshot.forEach(function(childSnapshot) {
+                                    printToTerminal("name: " + childSnapshot.key() + ", URL: " + childSnapshot.val())
+                                  });
+                                });
+                                
+                            } else if (command[0] === "getURL") {
+                                fb.child(command[1]).once("value", function(snapshot) {
+                                    printToTerminal("name: " + sbapshot.key() + ", URL: " + snapshot.val())
+                                });
+                            }
+                    
+                        }
+                }
                 function setup() {
-                        var url = $("#url").val();
-                        var link = $("#link").val();
+                    var fb = new Firebase("https://redirect.firebaseio.com");
+                    var url = $("#url").val().toLowerCase();
+                    var link = $("#link").val();
+                    if (link.substring(0, 1) === "/") {
+                        console(link)
+                    } else {
                         checkIfUserExists(url, link, function(exists, id, link){
                             if (exists) {
-                                $("#error").html("Your url already exists!")
+                                $("#success").html();
                                 $("#error").html("Your url already exists!")
                             } else {
                                 fb.child(url).set(link);
-                                $("#success").html("Sucuess! The link <b>http://jmls.tk#" + url + "<\/b> now redirects to <b>" + link + "<\/b>.");
+                                $("#success").html("Success! The link <b>http://jmls.tk#" + url + "<\/b> now redirects to <b>" + link + "<\/b>.");
                                 url.val("");
                                 link.val("")
                                 
                             }
                         });
+                    }
                     
                 }
     
