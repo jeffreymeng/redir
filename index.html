@@ -152,8 +152,10 @@
                 }
                 function setup() {
                     var fb = new Firebase("https://redirect.firebaseio.com");
-                    var url = $("#url").val().toLowerCase();
+                    var url = $("#url").val()
                     var link = $("#link").val();
+                    $("#link").val("");
+                    $("#url").val("");
                     if (link.substring(0, 1) === "/") {
                         console(link)
                     } else {
