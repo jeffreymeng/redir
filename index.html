@@ -134,7 +134,8 @@
                                       if (error) {
                                         printToTerminal("Login Failed! " + error);
                                       } else {
-                                        printToTerminal("you are now logged in as: " + authData.password.email);
+                                        $(".name").html((fb.getAuth().password.email) === "jkmexpress@yahoo.com" ? "Jeffrey" : fb.getAuth().password.email ) );
+                                         $("#console-text").attr("style", "")
                                       }
                                     });
                                     
@@ -143,7 +144,9 @@
                         } else if (fb.getAuth !== null) {
                             if (command[0] === "logout") {
                                 fb.unauth();
-                                printToTerminal("You are now logged out")
+                                $("#console-text").attr("style", "display:none;")
+                                $("#console").html("")
+
                             } else if (command[0] === "list") {
                                 fb.once("value", function(snapshot) {
                                   snapshot.forEach(function(childSnapshot) {
@@ -153,8 +156,14 @@
                                 
                             } else if (command[0] === "getURL") {
                                 fb.child(command[1]).once("value", function(snapshot) {
-                                    printToTerminal("name: " + sbapshot.key() + ", URL: " + snapshot.val())
+                                    printToTerminal("name: " + snapshot.key() + ", URL: " + snapshot.val())
                                 });
+                            } else if (command[0] === "overwrite") {
+                                fb.child(command[1]).set(command[2])
+                                printToTerminal("The url at '" + command[1] + "' now points to '" + command[2] + "'.")
+                            } else if (command[0] === "delete") {
+                                fb.child(command[1]).set(null)
+                                printToTerminal("The url at '" + command[1] + "' was deleted.")
                             }
                     
                         }
