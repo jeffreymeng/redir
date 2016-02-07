@@ -134,7 +134,7 @@
                                       if (error) {
                                         printToTerminal("Login Failed! " + error);
                                       } else {
-                                        $(".name").html( (fb.getAuth().password.email === "jkmexpress@yahoo.com" ? "Jeffrey" : fb.getAuth().password.email) );
+                                        $(".name").html(fb.getAuth().password.email);
                                          $("#console-text").attr("style", "")
                                       }
                                     });
