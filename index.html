@@ -164,6 +164,8 @@
                             } else if (command[0] === "delete") {
                                 fb.child(command[1]).set(null)
                                 printToTerminal("The url at '" + command[1] + "' was deleted.")
+                            } else if (command[0] === "delete") {
+                                $("#console").html("");
                             }
                     
                         }
