@@ -124,7 +124,8 @@
                         if (fb.getAuth() === null) {
                             
                             if (command[0] === "login") {
-                                if (command[1] === null || command[2] === null || command[1] === "" || command[2] === "") {
+                                if (command[1] === null || command[2] === null || command[1] === "" || command[2] === "" || command[1] === " " || command[2] === " ") {
+                                   
                                     printToTerminal("Error: You failed to specify any username or password(the correct usage should by: /login <username> <password> )")
                                 } else {
                                     fb.authWithPassword({
