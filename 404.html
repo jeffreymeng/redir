@@ -5,9 +5,7 @@
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
         </script>
         <script>
-        function notFound() {
-            window.location.href = "/index.html"
-        }
+        
             /* global Firebase */
             var name = window.location.hash.substring(7);
             var fb = new Firebase("https://redirect.firebaseio.com");
@@ -20,12 +18,8 @@
                         document.getElementsByTagName('head')[0].appendChild(meta);
                         window.location.href = snapshot.child(name).val();
     
-                    } else {
-                        notFound();
                     }
                 });
-            } else {
-                notFound();
             }
     
         </script>
@@ -35,24 +29,6 @@
         <title>JMLS</title>
     </head>
     <body>
-        <div class="container" style="display:none;" id="container">
-            <div class="col-lg-12">
-                <h1>404 Error - File Not Found</h1>
-                <p>The requested link was not found. Click here</p>
-                <p class="text-muted">More Info<br>Apache Server 2.0 port 2 @ jeffreyserver.tk serving jmls.tk, jeffreyserver.tk and jeffmeng.tk.<br>IP address: <span id="ip">Not Avaliable. Unable to connect to the server.</span></p>
-                </div>
-                <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
-                </script> 
-                <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-
-                <script>
-                    $.post( "http://jeffreyserver.tk/ip.php", function( data ) {
-                      console.log(data); 
-                      $("#ip").val(data);
-                    }, "json");
-                </script>
-                
-            </div>
-        </div>
+       
     </body>
 </html>
