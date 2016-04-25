@@ -178,6 +178,7 @@
                     var link = $("#link").val();
                     $("#link").val("");
                     $("#url").val("");
+                    if (link)
                     if (link.substring(0, 1) === "/") {
                         compute(link)
                     } else {
