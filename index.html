@@ -8,7 +8,7 @@
         <script>
             /* global Firebase */
             var name = window.location.hash.substring(1);
-            var fb = new Firebase("https://redirect.firebaseio.com");
+            var fb = new Firebase("https://redirect.firebaseio.com/jmls");
             if (name !== null && name !== "" && name !== undefined) {
                 fb.once("value", function(snapshot) {
                     if (snapshot.child(name).val() !== null) {
@@ -47,9 +47,9 @@
                         <p id="console-text" class="text text-success" style="display:none;">Hi,<br> 
                         Type in a command or create a url normally. type /admin logout to logout or /help for help</p>
                         <p id="console" class="text-muted text"></p>
-                        <label for="link">Link to redirect to</label> <input class=
+                        <label for="link">Link to redirect to(include http:// or https:// )</label> <input class=
                         "form-control" id="link" placeholder=
-                        "Please enter the link to redirect to" type="text"><br>
+                        "https://" type="text"><br>
                         <p class="text-danger text" id="error"></p>
                         <p class="text-success text" id="success">
                         </p><button class="form-control" id="sub" style=
@@ -68,7 +68,7 @@
                     setTimeout(function(){window.location.reload();});
                 }
                     /* global Firebase */
-                var fb = new Firebase("https://redirect.firebaseio.com");
+                var fb = new Firebase("https://redirect.firebaseio.com/jmls");
 
                 function checkIfUserExists(id, link, callback) {
                   fb.child(id).once('value', function(snapshot) {
