@@ -12,15 +12,11 @@
         if (name !== null && name !== "" && name !== undefined) {
             fb.once("value", function(snapshot) {
                 if (snapshot.child(name).val() !== null) {
-                    var meta = document.createElement('meta');
-                    meta.httpEquiv = "refresh";
-                    meta.content = "0; URL=" + snapshot.child(name).val();
-                    document.getElementsByTagName('head')[0].appendChild(meta);
+
                     window.location.href = snapshot.child(name).val();
 
                 } else {
-                    // $("#redir").hide();
-                    $("#container").attr("style", "display:block;");
+                    window.fail = true;
                 }
             });
         }
@@ -38,22 +34,18 @@
             <p>You got a link to jmls(Jeffrey Meng Link Shortner) that was supposed to redirect you to another page, but the link you got is invalid.</p>
             <p>The requested link was not found. <a>Click here to go to the home page</a>.</p>
             <p class="text-muted">More Info:</p>
-            <div class="collapse" id="collapseExample">
 
-                <p>Apache Server 2.0 port 2 @ jeffreyserver.tk serving jmls.tk(this website), jeffreyserver.tk and jeffmeng.tk.</p>
-                <p>IP address: <span id="ip">Unvaliable: Service Not Avaliable. Unable to connect to the server. <i>Error Code 503.</i></span></p>
-            </div>
         </div>
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
         </script>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-
         <script>
-            $.post("http://jeffreyserver.tk/ip.php", function(data) {
-                console.log(data);
-                $("#ip").val(data);
-            }, "json");
+            if (window.fail) {
+                $("#redir").hide();
+                $("#container").attr("style", "display:block;");
+            }
         </script>
+
 
     </div>
     </div>
