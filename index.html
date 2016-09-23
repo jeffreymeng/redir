@@ -37,7 +37,7 @@
                     <p>Create a redirection link below:</p>
                     <div>
                         
-                        <label for="basic-url">Choose a URL</label>
+                        <label for="basic-url">Choose a short URL</label>
                         <div class="input-group">
                             <span class="input-group-addon" id=
                             "basic-addon3">http://jmls.tk/</span>
@@ -177,8 +177,8 @@
                     var url = $("#url").val()
                     var link = $("#link").val();
                     
-                    var urlregex = new RegExp("(https?:|ftp:)\/\/.+", "g")
-                    
+                    var linkregex = new RegExp("(https?:|ftp:)\/\/.+", "g");
+                    var urlregex = new RegExp("[A-Za-z0-9-_]", "g")
                     if (link.substring(0, 1) === "/") {
                         compute(link)
                     } else {
@@ -186,9 +186,12 @@
                             if (exists) {
                                 $("#success").html("");
                                 $("#error").html("Your url already exists!")
+                            } else if (!linkregex.test(link)) {
+                                $("#success").html("");
+                                $("#error").html("The link to redirect to must be valid with http:// or https://");
                             } else if (!urlregex.test(link)) {
                                 $("#success").html("");
-                                $("#error").html("Your url must be valid with http:// or https://");
+                                $("#error").html("the short url must only contain dashes(-), underscores(_), and alphanumeric charcters");
                             }else {
                                 $("#link").val("");
                                 $("#url").val("");
