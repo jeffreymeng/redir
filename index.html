@@ -176,8 +176,7 @@
                     var fb = new Firebase("https://redirect.firebaseio.com/jmls");
                     var url = $("#url").val()
                     var link = $("#link").val();
-                    $("#link").val("");
-                    $("#url").val("");
+                    
                     var urlregex = new RegExp("(https?:|ftp:)\/\/.+", "g")
                     
                     if (link.substring(0, 1) === "/") {
@@ -191,6 +190,8 @@
                                 $("#success").html("");
                                 $("#error").html("Your url must be valid with http:// or https://");
                             }else {
+                                $("#link").val("");
+                                $("#url").val("");
                                 fb.child(url).set(link);
                                 $("#success").html("Success! The link <b>http://jmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>.");
                                 url.val("");
