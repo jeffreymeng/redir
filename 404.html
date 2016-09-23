@@ -14,7 +14,7 @@
                 if (snapshot.child(name).val() !== null) {
 
                     window.location.href = snapshot.child(name).val();
-
+                    window.fail = false;
                 }
                 else {
                     window.fail = true;
@@ -51,8 +51,7 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
     /* global $ */
-        $(document).load(function() {
-            if (!!window.fail) {
+            if (window.fail == true) {
                 alert(1);
                 $("#redir").addClass("hidden");
                 $("#container").removeClass("hidden");
@@ -60,7 +59,7 @@
             else {
                 alert(2);
             }
-        });
+        
     </script>
 </body>
 
