@@ -15,7 +15,8 @@
 
                     window.location.href = snapshot.child(name).val();
 
-                } else {
+                }
+                else {
                     window.fail = true;
                 }
             });
@@ -23,11 +24,16 @@
     </script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <title>JMLS</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
     <div id="redir">You will be redirdected to <span><a href="">your destination</a></span> in less than 15 seconds.</div>
-    <div class="container" style="display:none;" id="container">
+    <div class="container hidden" id="container">
         <div class="col-lg-12">
             <h1>Something Went Wrong!</h1>
             <h3 class="text-muted">404 Error - File Not Found</h3>
@@ -36,13 +42,11 @@
             <p class="text-muted">More Info:</p>
 
         </div>
-        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
-        </script>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>
             if (window.fail) {
                 $("#redir").hide();
-                $("#container").attr("style", "display:block;");
+                $("#container").removeClass("hidden");
             }
         </script>
 
