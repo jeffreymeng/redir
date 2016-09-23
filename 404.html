@@ -16,9 +16,7 @@
                     window.location.href = snapshot.child(name).val();
                     
                 }
-                else {
-                    sessionStorage.setItem("jmls-url-fail-" + name, "true");
-                }
+                
             });
         }
     </script>
@@ -50,15 +48,11 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
-    /* global $ sessionStorage*/
-            if (sessionStorage.getItem("jmls-url-fail-" + name) === "true") {
-                alert(1);
+    /* global $*/
+
                 $("#redir").addClass("hidden");
                 $("#container").removeClass("hidden");
-            }
-            else {
-                alert(sessionStorage.getItem("jmls-url-fail-" + name));
-            }
+            
         
     </script>
 </body>
