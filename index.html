@@ -178,8 +178,8 @@
                     var link = $("#link").val();
                     $("#link").val("");
                     $("#url").val("");
-                    var urlregex = new RegExp("(https?:\/\/)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", "g")
-                    if (link)
+                    var urlregex = new RegExp("(https?:|ftp:)\/\/.+", "g")
+                    
                     if (link.substring(0, 1) === "/") {
                         compute(link)
                     } else {
@@ -187,9 +187,9 @@
                             if (exists) {
                                 $("#success").html("");
                                 $("#error").html("Your url already exists!")
-                            } else if (!urlregex.test(url)) {
+                            } else if (!urlregex.test(link)) {
                                 $("#success").html("");
-                                $("#error").html("Your url must include http:// or https://");
+                                $("#error").html("Your url must be valid with http:// or https://");
                             }else {
                                 fb.child(url).set(link);
                                 $("#success").html("Success! The link <b>http://jmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>.");
