@@ -14,10 +14,10 @@
                 if (snapshot.child(name).val() !== null) {
 
                     window.location.href = snapshot.child(name).val();
-                    window.fail = false;
+                    
                 }
                 else {
-                    window.fail = true;
+                    sessionStorage.setItem("jmls-url-fail-" + name, "true");
                 }
             });
         }
@@ -50,14 +50,14 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
-    /* global $ */
-            if (window.fail == true) {
+    /* global $ sessionStorage*/
+            if (sessionStorage.getItem("jmls-url-fail-" + name) === "true") {
                 alert(1);
                 $("#redir").addClass("hidden");
                 $("#container").removeClass("hidden");
             }
             else {
-                alert(window.fail);
+                alert(sessionStorage.getItem("jmls-url-fail-" + name));
             }
         
     </script>
