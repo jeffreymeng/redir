@@ -20,6 +20,7 @@
         var name = decodeURIComponent(window.location.pathname.substring(1));
         if (name !== null && name !== "" && name !== undefined) {
             firebase.database().ref("/links/jmls/" + name).once("value", function(data) {
+                console.log(data.val());
                 if (data.val() !== null) {
 
                     window.location.href = data.val();
