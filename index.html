@@ -3,16 +3,27 @@
 
 <head>
 
-    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js">
-    </script>
+    
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+    authDomain: "jcabinet.firebaseapp.com",
+    databaseURL: "https://jcabinet.firebaseio.com",
+    storageBucket: "firebase-jcabinet.appspot.com",
+    messagingSenderId: "1056566579088"
+  };
+  firebase.initializeApp(config);
+</script>
 
     <script>
         /* global Firebase */
         var name = window.location.hash.substring(1);
-        var fb = new Firebase("https://redirect.firebaseio.com/jmls");
+        
         if (name !== null && name !== "" && name !== undefined) {
-            fb.once("value", function(snapshot) {
-                if (snapshot.child(name).val() !== null) {
+            firebase.database().ref("/links/jmls/" + name + "/").once("value", function(data) {
+                if (data.val() !== null) {
                     var meta = document.createElement('meta');
                     meta.httpEquiv = "refresh";
                     meta.content = "0; URL=" + snapshot.child(name).val();
@@ -56,131 +67,17 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
             </script>
             <script>
-                /* global Firebase $ */
-                window.onhashchange = function() {
-                    setTimeout(function() {
-                        window.location.reload();
-                    });
-                };
-
-                var fb = new Firebase("https://redirect.firebaseio.com/jmls");
-
-                function checkIfUserExists(id, link, callback) {
-                    fb.child(id).once('value', function(snapshot) {
+               
+                function checkIfURLExists(id, link, callback) {
+                    firebase.database().ref("/links/jmls/" + id + "/").once('value', function(snapshot) {
                         var exists = (snapshot.val() !== null);
                         callback(exists, id, link);
                     });
                 }
-                // /admin login
-                // > please enter username:
-                //   jmeng
-                // > please enter password:
-                //   ********* (password)
-                // > password incorrect, please try again:
-                //   ***************** (superneatpassword)
-                // > password accepted, hi Jeffrey
-                // /list
-                // > List of all redirects
-                // /overwrite hi jeffreyisawesome
-                // >overwrite complete.
-                // /view hi
-                // > hi : www.etc.com
-                // /delete hi
-                // > hi deleted
-                // /admin logout
-                // >you are logged out
-                $(document).keypress(function(e) {
-                    if (e.which == 13) {
-                        setup();
-                    }
-                });
-
-                function compute(link) {
-                    function printToTerminal(p) {
-                        $("#console").append(p + "<br>");
-                    }
-                    var command = link.substring(1).split(" ");
-                    if (command[0] === "authStatus" || command[0] === "authState") {
-                        printToTerminal((fb.getAuth() !== null ? "You are logged in as: " + fb.getAuth().password.email : "You are not logged in."));
-                    }
-                    if (command[0] === "visibility") {
-                        if (command[1] === "none" || command[1] === "password") {
-                            $("#link").attr("type", "password");
-                        }
-                        else if (command[1] !== null) {
-                            $("#link").attr("type", "text");
-                        }
-
-
-                    }
-                    if (command[0] === "hide" || command[0] === "password") {
-                        $("#link").attr("type", "password");
-                    }
-                    else if (command[0] === "text" || command[0] === "show") {
-                        $("#link").attr("type", "text");
-                    }
-
-                    if (fb.getAuth() === null) {
-
-                        if (command[0] === "login") {
-                            if (command[1] === null || command[2] === null || command[1] === "" || command[2] === "" || command[1] === " " || command[2] === " ") {
-
-                                printToTerminal("Error: You failed to specify any username or password(the correct usage should by: /login <username> <password> )");
-                            }
-                            else {
-                                fb.authWithPassword({
-                                    email: command[1],
-                                    password: command[2]
-                                }, function(error, authData) {
-                                    if (error) {
-                                        printToTerminal("Login Failed! " + error);
-                                    }
-                                    else {
-                                        $(".name").html(fb.getAuth().password.email);
-                                        $("#console-text").attr("style", "")
-                                    }
-                                });
-
-                            }
-                        }
-                    }
-                    else if (fb.getAuth !== null) {
-                        if (command[0] === "logout") {
-                            fb.unauth();
-                            $("#console-text").attr("style", "display:none;");
-                            $("#console").html("");
-
-                        }
-                        else if (command[0] === "list") {
-                            fb.once("value", function(snapshot) {
-                                snapshot.forEach(function(childSnapshot) {
-                                    printToTerminal("name: " + childSnapshot.key() + ", URL: " + childSnapshot.val());
-                                });
-                            });
-
-                        }
-                        else if (command[0] === "getURL") {
-                            fb.child(command[1]).once("value", function(snapshot) {
-                                printToTerminal("name: " + snapshot.key() + ", URL: " + snapshot.val());
-                            });
-                        }
-                        else if (command[0] === "overwrite") {
-                            fb.child(command[1]).set(command[2]);
-                            printToTerminal("The url at '" + command[1] + "' now points to '" + command[2] + "'.");
-                        }
-                        else if (command[0] === "delete") {
-                            fb.child(command[1]).set(null);
-                            printToTerminal("The url at '" + command[1] + "' was deleted.");
-                        }
-                        else if (command[0] === "clear") {
-                            $("#console").html("");
-                        }
-
-                    }
-                }
+                
 
                 function setup() {
-                    var fb = new Firebase("https://redirect.firebaseio.com/jmls");
+                    
                     var url = $("#url").val();
                     var link = $("#link").val();
 
@@ -199,7 +96,7 @@
                             $("#error").html("the short url must only contain dashes(-), underscores(_), and alphanumeric charcters");
                         }
                         else {
-                            checkIfUserExists(url, link, function(exists, id, link) {
+                            checkIfURLExists(url, link, function(exists, id, link) {
                                 if (exists) {
                                     $("#success").html("");
                                     $("#error").html("Your url already exists!");

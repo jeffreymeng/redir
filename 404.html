@@ -12,11 +12,11 @@
         if (name !== null && name !== "" && name !== undefined) {
             fb.once("value", function(snapshot) {
                 if (snapshot.child(name).val() !== null) {
-                    
+
                     window.location.href = snapshot.child(name).val();
-                    
+
                 }
-                
+
             });
         }
     </script>
@@ -48,14 +48,11 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
-    /* global $*/
-            setTimeout(function() {
-                $("#redir").addClass("hidden");
-                $("#container").removeClass("hidden");
-            }, 2000);
-                
-            
-        
+        /* global $*/
+        setTimeout(function() {
+            $("#redir").addClass("hidden");
+            $("#container").removeClass("hidden");
+        }, 2000);
     </script>
 </body>
 
