@@ -18,6 +18,7 @@
     <script>
         /* global firebase */
         var name = decodeURIComponent(window.location.pathname.substring(1));
+        console.log("name");
         if (name !== null && name !== "" && name !== undefined) {
             firebase.database().ref("/links/jmls/" + name).once("value", function(data) {
                 console.log(data.val());
