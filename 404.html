@@ -21,7 +21,7 @@
         console.log(name);
         if (name !== null && name !== "" && name !== undefined) {
             console.log(1);
-            firebase.database().ref("/links/jmls/" + name + "/").once("value", function(data) {
+            firebase.database().ref("/links/jmls/" + name + "/").once("value").then( function(data) {
                 console.log(2);
                 console.log(data.val());
                 if (data.val() !== null) {
@@ -64,7 +64,7 @@
         /* global firebase */
         var name = decodeURIComponent(window.location.pathname.substring(1));
         if (name !== null && name !== "" && name !== undefined) {
-            firebase.database().ref("/links/jmls/" + name).once("value", function(data) {
+            firebase.database().ref("/links/jmls/" + name + "/").once("value").then( function(data) {
                 console.log(data.val());
                 if (data.val() !== null) {
 

@@ -22,7 +22,7 @@
         var name = window.location.hash.substring(1);
 
         if (name !== null && name !== "" && name !== undefined) {
-            firebase.database().ref("/links/jmls/" + name + "/").once("value", function(data) {
+            firebase.database().ref("/links/jmls/" + name + "/").once("value").then( function(data) {
                 if (data.val() !== null) {
                     window.location.href = data.val();
 
