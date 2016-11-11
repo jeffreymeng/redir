@@ -49,12 +49,10 @@
                         <span class="input-group-addon" id="basic-addon3">http://jmls.tk/</span>
                         <input aria-describedby="basic-addon3" class="form-control" id="url" placeholder="url" type="text">
                     </div><br>
-                    <p id="console-text" class="text text-success" style="display:none;">Hi,<br> Type in a command or create a url normally. type /admin logout to logout or /help for help</p>
-                    <p id="console" class="text-muted text"></p>
                     <label for="link">Link to redirect to(include http:// or https:// )</label> <input class="form-control" id="link" placeholder="https://" type="text"><br>
                     <p class="text-danger text" id="error"></p>
                     <p class="text-success text" id="success">
-                    </p><button class="form-control" id="sub" style="background-color:green;color:white;">Submit</button>
+                    </p><button class="form-control" id="submit" style="background-color:green;color:white;">Submit</button>
                 </div>
             </div>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -69,13 +67,13 @@
                         callback(exists, id, link);
                     });
                 }
-                $(".input1").on('keyup', function(e) {
+                $(document).on('keyup', function(e) {
                     if (e.keyCode == 13) {
-                        $("#sub").click();
+                        $("#submit").click();
                     }
                 });
 
-                $("#sub").click(function() {
+                $("#submit").click(function() {
                     var url = $("#url").val();
                     var link = $("#link").val();
 
