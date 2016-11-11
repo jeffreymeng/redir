@@ -57,11 +57,31 @@
     </div>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
-        /* global $*/
-        setTimeout(function() {
-            $("#redir").addClass("hidden");
-            $("#container").removeClass("hidden");
-        }, 2000);
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+            authDomain: "jcabinet.firebaseapp.com",
+            databaseURL: "https://jcabinet.firebaseio.com",
+            storageBucket: "firebase-jcabinet.appspot.com",
+            messagingSenderId: "1056566579088"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        /* global firebase */
+        var name = decodeURIComponent(window.location.pathname.substring(1));
+        if (name !== null && name !== "" && name !== undefined) {
+            firebase.database().ref("/links/jmls/" + name).once("value", function(data) {
+                if (data.val() !== null) {
+
+                    window.location.href = data.val();
+
+                } else {
+                    $("#container").removeClass("hidden");
+                }
+
+            });
+        }
     </script>
 </body>
 
