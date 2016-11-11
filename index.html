@@ -3,31 +3,28 @@
 
 <head>
 
-    
-<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
-    authDomain: "jcabinet.firebaseapp.com",
-    databaseURL: "https://jcabinet.firebaseio.com",
-    storageBucket: "firebase-jcabinet.appspot.com",
-    messagingSenderId: "1056566579088"
-  };
-  firebase.initializeApp(config);
-</script>
+
+    <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+            authDomain: "jcabinet.firebaseapp.com",
+            databaseURL: "https://jcabinet.firebaseio.com",
+            storageBucket: "firebase-jcabinet.appspot.com",
+            messagingSenderId: "1056566579088"
+        };
+        firebase.initializeApp(config);
+    </script>
 
     <script>
-        /* global Firebase */
+        /* global firebase */
         var name = window.location.hash.substring(1);
-        
+
         if (name !== null && name !== "" && name !== undefined) {
             firebase.database().ref("/links/jmls/" + name + "/").once("value", function(data) {
                 if (data.val() !== null) {
-                    var meta = document.createElement('meta');
-                    meta.httpEquiv = "refresh";
-                    meta.content = "0; URL=" + snapshot.child(name).val();
-                    document.getElementsByTagName('head')[0].appendChild(meta);
+                    window.location.href = data.val();
 
                 }
             });
@@ -57,7 +54,7 @@
                     <label for="link">Link to redirect to(include http:// or https:// )</label> <input class="form-control" id="link" placeholder="https://" type="text"><br>
                     <p class="text-danger text" id="error"></p>
                     <p class="text-success text" id="success">
-                    </p><button class="form-control" id="sub" style="background-color:green;color:white;" onclick="setup()">Submit</button>
+                    </p><button class="form-control" id="sub" style="background-color:green;color:white;">Submit</button>
                 </div>
             </div>
             <script src="http://code.jquery.com/jquery-1.11.3.min.js">
@@ -67,26 +64,20 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
             </script>
             <script>
-               
+            /* global firebase $ */
                 function checkIfURLExists(id, link, callback) {
                     firebase.database().ref("/links/jmls/" + id + "/").once('value', function(snapshot) {
                         var exists = (snapshot.val() !== null);
                         callback(exists, id, link);
                     });
                 }
-                
-
-                function setup() {
-                    
+                $("#sub").click(function() {
                     var url = $("#url").val();
                     var link = $("#link").val();
 
                     var linkregex = new RegExp("(https?:|ftp:)\/\/.+", "g");
                     var urlregex = new RegExp("[A-Za-z0-9-_]", "g");
-                    if (link.substring(0, 1) === "/") {
-                        compute(link);
-                    }
-                    else {
+                    
                         if (!linkregex.test(link)) {
                             $("#success").html("");
                             $("#error").html("The link to redirect to must be valid with http:// or https://");
@@ -104,7 +95,7 @@
                                 else {
                                     $("#link").val("");
                                     $("#url").val("");
-                                    fb.child(url).set(link);
+                                    firebase.database().ref("/links/jmls/" + url + "/").set(link);
                                     $("#success").html("Success! The link <b>http://jmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>. If you are embedding this link, use <b>http://jmls.tk/#" + url + "<\/b>.");
                                     url.val("");
                                     link.val("");
@@ -112,9 +103,8 @@
                                 }
                             });
                         }
-                    }
-
-                }
+                    
+                });
             </script>
         </div>
     </div>
