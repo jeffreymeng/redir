@@ -66,8 +66,8 @@
             <script>
             /* global firebase $ */
                 function checkIfURLExists(id, link, callback) {
-                    firebase.database().ref("/links/jmls/" + id + "/").once('value', function(snapshot) {
-                        var exists = (snapshot.val() !== null);
+                    firebase.database().ref("/links/jmls/" + id + "/").once("value", function(data) {
+                        var exists = (data.val() !== null);
                         callback(exists, id, link);
                     });
                 }
