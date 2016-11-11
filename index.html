@@ -62,58 +62,64 @@
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
             </script>
             <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
-            authDomain: "jcabinet.firebaseapp.com",
-            databaseURL: "https://jcabinet.firebaseio.com",
-            storageBucket: "firebase-jcabinet.appspot.com",
-            messagingSenderId: "1056566579088"
-        };
-        firebase.initializeApp(config);
-    </script>
             <script>
-            /* global firebase $ */
+                // Initialize Firebase
+                var config = {
+                    apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+                    authDomain: "jcabinet.firebaseapp.com",
+                    databaseURL: "https://jcabinet.firebaseio.com",
+                    storageBucket: "firebase-jcabinet.appspot.com",
+                    messagingSenderId: "1056566579088"
+                };
+                firebase.initializeApp(config);
+            </script>
+            <script>
+                /* global firebase $ */
                 function checkIfURLExists(id, link, callback) {
                     firebase.database().ref("/links/jmls/" + id + "/").once("value", function(data) {
                         var exists = (data.val() !== null);
                         callback(exists, id, link);
                     });
                 }
+                $(".input1").on('keyup', function(e) {
+                    if (e.keyCode == 13) {
+                        $("#sub").click();
+                    }
+                });
+
                 $("#sub").click(function() {
                     var url = $("#url").val();
                     var link = $("#link").val();
 
                     var linkregex = new RegExp("(https?:|ftp:)\/\/.+", "g");
                     var urlregex = new RegExp("[A-Za-z0-9-_]", "g");
-                    
-                        if (!linkregex.test(link)) {
-                            $("#success").html("");
-                            $("#error").html("The link to redirect to must be valid with http:// or https://");
-                        }
-                        else if (!urlregex.test(link)) {
-                            $("#success").html("");
-                            $("#error").html("the short url must only contain dashes(-), underscores(_), and alphanumeric charcters");
-                        }
-                        else {
-                            checkIfURLExists(url, link, function(exists, id, link) {
-                                if (exists) {
-                                    $("#success").html("");
-                                    $("#error").html("Your url already exists!");
-                                }
-                                else {
-                                    $("#link").val("");
-                                    $("#url").val("");
-                                    firebase.database().ref("/links/jmls/" + url + "/").set(link);
-                                    $("#success").html("Success! The link <b>http://jmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>. If you are embedding this link, use <b>http://jmls.tk/#" + url + "<\/b>.");
-                                    url.val("");
-                                    link.val("");
 
-                                }
-                            });
-                        }
-                    
+                    if (!linkregex.test(link)) {
+                        $("#success").html("");
+                        $("#error").html("The link to redirect to must be valid with http:// or https://");
+                    }
+                    else if (!urlregex.test(link)) {
+                        $("#success").html("");
+                        $("#error").html("the short url must only contain dashes(-), underscores(_), and alphanumeric charcters");
+                    }
+                    else {
+                        checkIfURLExists(url, link, function(exists, id, link) {
+                            if (exists) {
+                                $("#success").html("");
+                                $("#error").html("Your url already exists!");
+                            }
+                            else {
+                                $("#link").val("");
+                                $("#url").val("");
+                                firebase.database().ref("/links/jmls/" + url + "/").set(link);
+                                $("#success").html("Success! The link <b>http://jmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>. If you are embedding this link, use <b>http://jmls.tk/#" + url + "<\/b>.");
+                                url.val("");
+                                link.val("");
+
+                            }
+                        });
+                    }
+
                 });
             </script>
         </div>
