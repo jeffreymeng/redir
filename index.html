@@ -26,13 +26,13 @@
 	<script>
 
 		if (window.location.hash !== "") {
-			firebase.database.ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1))).once("value").then(function (snapshot) {
+			firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1))).once("value").then(function (snapshot) {
 				if (snapshot.val() !== null) {
 					window.location.href = snapshot.val();
 				}
 			});
 		}
-		
+
 	</script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jeffkmeng.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
@@ -94,14 +94,14 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="name-addon">https://jkmls.tk/</span>
 					</div>
-					<input type="text" class="form-control is-invalid" id="name" aria-describedby="name-addon">
+					<input type="text" class="form-control" id="name" aria-describedby="name-addon">
 					<div class="input-group-append">
-						<button class="btn btn-primary" type="button">Random</button>
+						<button class="btn btn-primary" type="button" tabindex="-1">Random</button>
+						<!-- we set tab index of the random button to -1 to allow the tab to move directly from short url to the link 
+						It is unlikely a user will press tab to get to the random button after filling out a short url.-->
 					</div>
 
-					<div class="invalid-feedback" id="name-validation">
-						The short name is taken.
-					</div>
+					<div class="invalid-feedback" id="name-validation"></div>
 				</div>
 
 
@@ -109,7 +109,11 @@
 			</div>
 
 			<label for="link">Link to redirect to:</label>
-			<input type="text" class="form-control mb-2" id="link" placeholder="Include http:// or https://">
+			<div class="input-group">
+
+				<input type="text" class="form-control mb-2" id="link" placeholder="Include http:// or https://">
+				<div class="invalid-feedback" id="link-validation"></div>
+			</div>
 			<a data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced">
 				Advanced Options
 			</a>
@@ -165,7 +169,73 @@
 	<script src="https://cdn.jeffkmeng.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 	<script>
+		var nameRegex = new RegExp("^[A-Za-z0-9][A-Za-z0-9-_ ]*$");
+		var urlRegex = new RegExp("^((https?|ftp):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
+		function showNameError(message) {
+			$("#name-validation").html(message);
+			$("#name").removeClass("is-valid");
+			$("#name").addClass("is-invalid");
+		}
+		function showNameSuccess() {
+			$("#name").removeClass("is-invalid");
+			$("#name").addClass("is-valid");
+		}
+		function hideNameColors() {
+			$("#name").removeClass("is-invalid");
+			$("#name").removeClass("is-valid");
+		}
+		function showLinkError(message) {
+			$("#link-validation").html(message);
+			$("#link").removeClass("is-valid");
+			$("#link").addClass("is-invalid");
+		}
+		function showLinkSuccess() {
+			$("#link").removeClass("is-invalid");
+			$("#link").addClass("is-valid");
+		}
+		function hideLinkColors() {
+			$("#link").removeClass("is-invalid");
+			$("#link").removeClass("is-valid");
+		}
+		</script>
+		<script>
+		$("#name").keyup(function () {
+			name = $("#name").val();
+			if (name == "") {
+				hideNameColors();
 
+			} else if (!(nameRegex.test(name))) {
+				showNameError(`The short name <code>${name}</code> uses invalid charcters. You may only use letters, numbers, dashes, underscores, and spaces. The URL must start with a letter or number.`);
+			} else {
+				firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).once("value").then(function (snapshot) {
+					if (snapshot.val() != null) {
+						showNameError(`The short name <code>${name}</code> is taken.`);
+					} else {
+						showNameSuccess();
+					}
+				});
+			}
+		});
+		$("#link").keyup(function () {
+			link = $("#link").val();
+
+			if (link == "") {
+				hideLinkColors();
+
+			} else if (!(urlRegex.test(link))) {
+				showLinkError(`The URL <code>${link}</code> is invalid. Remeber to use http:// or https://. Only http, https, file, and ftp protocol urls are supported.`);
+			} else {
+
+				showLinkSuccess();
+
+			}
+		});
+		$("#create").click(function () {
+			//TODO: add command line to input field for admin
+			console.log($("#name").val());
+			console.log($("#link").val());
+
+		});
 
 	</script>
 </body>
