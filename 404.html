@@ -23,7 +23,7 @@
         //console.log(name);
         if (name !== null && name !== "" && name !== undefined) {
             //console.log(1);
-            firebase.database().ref("/links/jmls/" + name + "/").once("value").then(function (data) {
+            firebase.database().ref("/links/jmls/" + name + "/link/").once("value").then(function (data) {
                 //console.log(2);
                 //console.log(data.val());
                 if (data.val() !== null) {

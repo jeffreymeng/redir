@@ -24,7 +24,7 @@
         var name = window.location.hash.substring(1);
 
         if (name !== null && name !== "" && name !== undefined) {
-            firebase.database().ref("/links/jmls/" + name + "/").once("value").then(function (data) {
+            firebase.database().ref("/links/jmls/" + name + "/link/").once("value").then(function (data) {
                 if (data.val() !== null) {
                     window.location.href = data.val();
 
@@ -71,7 +71,7 @@
             <script>
                 /* global firebase $ */
                 function checkIfURLExists(id, link, callback) {
-                    firebase.database().ref("/links/jmls/" + id + "/").once("value", function (data) {
+                    firebase.database().ref("/links/jmls/" + id + "/link/").once("value", function (data) {
                         var exists = (data.val() !== null);
                         callback(exists, id, link);
                     });
@@ -106,7 +106,7 @@
                             else {
                                 $("#link").val("");
                                 $("#url").val("");
-                                firebase.database().ref("/links/jmls/" + url + "/").set(link);
+                                firebase.database().ref("/links/jmls/" + url + "/link/").set(link);
                                 $("#success").html("Success! The link <b>http://jkmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>. If you are embedding this link, use <b>http://jkmls.tk/#" + url + "<\/b>.");
                                 url.val("");
                                 link.val("");
