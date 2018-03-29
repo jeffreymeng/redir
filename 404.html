@@ -1,1 +1,25 @@
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+        authDomain: "jcabinet.firebaseapp.com",
+        databaseURL: "https://jcabinet.firebaseio.com",
+        projectId: "firebase-jcabinet",
+        storageBucket: "firebase-jcabinet.appspot.com",
+        messagingSenderId: "1056566579088"
+    };
+    firebase.initializeApp(config);
+</script>
+<script>
 
+    if (window.location.hash !== "") {
+        firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
+            if (snapshot.val() !== null) {
+                window.location.href = snapshot.val();
+            }
+        });
+    }
+
+</script>

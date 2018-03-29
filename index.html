@@ -10,7 +10,8 @@
 	<title>JKMLS</title>
 
 
-	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
 	<script>
 		// Initialize Firebase
 		var config = {
@@ -26,7 +27,7 @@
 	<script>
 
 		if (window.location.hash !== "") {
-			firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1))).once("value").then(function (snapshot) {
+			firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
 				if (snapshot.val() !== null) {
 					window.location.href = snapshot.val();
 				}
