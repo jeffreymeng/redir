@@ -63,7 +63,7 @@
         /* global firebase */
         var name = decodeURIComponent(window.location.pathname.substring(1));
         if (name !== null && name !== "" && name !== undefined) {
-            firebase.database().ref("/links/jmls/" + name + "/").once("value").then(function (data) {
+            firebase.database().ref("/links/jmls/" + name + "/link/").once("value").then(function (data) {
                 console.log(data.val());
                 if (data.val() !== null) {
 
