@@ -174,7 +174,7 @@
 	<script src="https://cdn.jeffkmeng.com/clipboardtooltipper/1.0.0/clipboardtooltipper.js"></script>
 	<script>
 		var nameRegex = new RegExp("^[A-Za-z0-9][A-Za-z0-9-_ ]*$");
-		var urlRegex = new RegExp("^((https?|ftp):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
+		var urlRegex = new RegExp("^((https?|ftp|file):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
 		function showNameError(message) {
 			$("#name-validation").html(message);
 			$("#name").removeClass("is-valid");
