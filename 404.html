@@ -25,6 +25,7 @@
                 if (snapshot.val() !== null) {
                     window.location.href = snapshot.val();
                 } else {
+                    console.log("404");
                     document.open();//clears everything
 
                     document.write(`
