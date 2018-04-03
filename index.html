@@ -170,7 +170,7 @@
 	<script src="https://cdn.jeffkmeng.com/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdn.jeffkmeng.com/popperjs/1.12.9/popper.min.js"></script>
 	<script src="https://cdn.jeffkmeng.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
+	<script src="https://cdn.jeffkmeng.com/clipboardtooltipper/1.0.0/clipboardtooltipper.js"></script>
 	<script>
 		var nameRegex = new RegExp("^[A-Za-z0-9][A-Za-z0-9-_ ]*$");
 		var urlRegex = new RegExp("^((https?|ftp):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
@@ -221,6 +221,7 @@
 		}
 	</script>
 	<script>
+		clipboardTooltipper.init(".clip");
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		});
@@ -298,7 +299,7 @@
 								created: Date(),
 								createdUTC: Date.now()
 							}).then(function () {
-								$("#alert-box").html(getSuccessAlert(`The link <b data-toggle="tooltip" data-placement="top" title="Copy to clipboard">https://jkmls.tk/${name}</b> now redirects to <b>${link}`));
+								$("#alert-box").html(getSuccessAlert(`The link <a data-toggle="tooltip" data-placement="top" title="Copy to clipboard" class="clip alert-link">https://jkmls.tk/${name}</a> now redirects to <a class="clip alert-link">${link}</a>.`));
 								setButtonLoading(false);
 							});
 						}
