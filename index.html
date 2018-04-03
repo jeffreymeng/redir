@@ -2,123 +2,324 @@
 <html>
 
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Jeffrey Meng">
+
+	<title>JKMLS</title>
+
+	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
+			authDomain: "jcabinet.firebaseapp.com",
+			databaseURL: "https://jcabinet.firebaseio.com",
+			projectId: "firebase-jcabinet",
+			storageBucket: "firebase-jcabinet.appspot.com",
+			messagingSenderId: "1056566579088"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script>
+
+		if (window.location.hash !== "") {
+			firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
+				if (snapshot.val() !== null) {
+					window.location.href = snapshot.val();
+				}
+			});
+		}
+
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jeffkmeng.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<style>
+		/* https://stackoverflow.com/a/3525675/5511561 */
+
+		html,
+		body {
+			margin: 0px;
+			padding: 0px;
+			min-height: 100%;
+			height: 100%;
+		}
+
+		.container {
+			min-height: 100%;
+			height: auto !important;
+			margin-bottom: -50px;
+			/* the bottom margin is the negative value of the footer's total height */
+		}
+
+		.container:after {
+			content: "";
+			display: block;
+			height: 50px;
+			/* the footer's total height */
+		}
 
 
 
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDoXIdwM34SiFL2jB055Jo4VdyJk-pVIDA",
-            authDomain: "jcabinet.firebaseapp.com",
-            databaseURL: "https://jcabinet.firebaseio.com",
-            projectId: "firebase-jcabinet",
-            storageBucket: "firebase-jcabinet.appspot.com",
-            messagingSenderId: "1056566579088"
-        };
-        firebase.initializeApp(config);
-    </script>
+		.footer {
+			height: 50px;
+			/* the footer's total height */
+		}
 
-    <script>
-        /* global firebase */
-        var name = window.location.hash.substring(1);
+		.footer-content {
 
-        if (name !== null && name !== "" && name !== undefined) {
-            firebase.database().ref("/links/jmls/" + name + "/link/").once("value").then(function (data) {
-                if (data.val() !== null) {
-                    window.location.href = data.val();
+			height: 32px;
+			/* height + top/bottom paddding + top/bottom border must add up to footer height */
+			padding: 8px;
+		}
 
-                }
-            });
-        }
-    </script>
-    <link href="https://cdn.jeffkmeng.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <title>JMLS - Jeffrey Meng Link Shortener</title>
+		.hidden {
+			display: none;
+		}
+	</style>
+
 </head>
 
 <body>
-    <div class="container">
-        <div class="col-lg-12">
-            <h1>JMKLS(Jeffrey Meng Link Shortener)</h1>
-            <p class="text-muted">Jeffrey's link shortening service.</p>
-            <hr>
-            <div id="create">
+	<div class="container">
+		<div class="col-lg-12">
+			<h1>JKMLS</h1>
+			<p class="text-muted">A simple, feature packed, link shortener</p>
+			<hr>
+			<div id="alert-box"></div>
+			<div id="name-group">
+				<label for="name">Short Link:</label>
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="name-addon">https://jkmls.tk/</span>
+					</div>
+					<input type="text" class="form-control" id="name" aria-describedby="name-addon">
+					<div class="input-group-append">
+						<button class="btn btn-primary" type="button" tabindex="-1">Random</button>
+						<!-- we set tab index of the random button to -1 to allow the tab to move directly from short url to the link 
+						It is unlikely a user will press tab to get to the random button after filling out a short url.-->
+					</div>
 
-                <p>Create a redirection link below:</p>
-                <div>
+					<div class="invalid-feedback" id="name-validation"></div>
+				</div>
 
-                    <label for="url">Choose a short URL:</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="url-addon">http://jkmls.tk/</span>
-                        </div>
-                        <input type="text" class="form-control" id="url" aria-describedby="ur;-addon">
-                    </div>
-                    <br>
-                    <label for="link">Link to redirect to(include http:// or https:// )</label>
-                    <input class="form-control" id="link" placeholder="https://" type="text">
-                    <br>
-                    <p class="text-danger text" id="error"></p>
-                    <p class="text-success text" id="success">
-                    </p>
-                    <button class="form-control btn btn-primary btn-block" id="submit">Submit</button>
-                </div>
-            </div>
-            <script src="https://cdn.jeffkmeng.com/jquery/3.3.1/jquery.min.js"></script>
-            <script src="https://cdn.jeffkmeng.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
-            </script>
 
-            <script>
-                /* global firebase $ */
-                function checkIfURLExists(id, link, callback) {
-                    firebase.database().ref("/links/jmls/" + id + "/link/").once("value", function (data) {
-                        var exists = (data.val() !== null);
-                        callback(exists, id, link);
-                    });
-                }
-                $(document).on('keyup', function (e) {
-                    if (e.keyCode == 13) {
-                        $("#submit").click();
-                    }
-                });
 
-                $("#submit").click(function () {
-                    var url = $("#url").val();
-                    var link = $("#link").val();
+			</div>
 
-                    var linkregex = new RegExp("(https?:|ftp:)\/\/.+", "g");
-                    var urlregex = new RegExp("[A-Za-z0-9-_]", "g");
+			<label for="link">Link to redirect to:</label>
+			<div class="input-group">
 
-                    if (!linkregex.test(link)) {
-                        $("#success").html("");
-                        $("#error").html("The link to redirect to must be valid with http:// or https://");
-                    }
-                    else if (!urlregex.test(link)) {
-                        $("#success").html("");
-                        $("#error").html("the short url must only contain dashes(-), underscores(_), and alphanumeric charcters");
-                    }
-                    else {
-                        checkIfURLExists(url, link, function (exists, id, link) {
-                            if (exists) {
-                                $("#success").html("");
-                                $("#error").html("Your url already exists!");
-                            }
-                            else {
-                                $("#link").val("");
-                                $("#url").val("");
-                                firebase.database().ref("/links/jmls/" + url + "/link/").set(link);
-                                $("#success").html("Success! The link <b>http://jkmls.tk/" + url + "<\/b> now redirects to <b>" + link + "<\/b>. If you are embedding this link, use <b>http://jkmls.tk/#" + url + "<\/b>.");
-                                url.val("");
-                                link.val("");
+				<input type="text" class="form-control mb-2" id="link" placeholder="Include http:// or https://">
+				<div class="invalid-feedback" id="link-validation"></div>
+			</div>
+			<a data-toggle="collapse" href="#advanced" aria-expanded="false" aria-controls="advanced" id="advanced-options">
+				Show Advanced Options
+			</a>
+			<div class="collapse" id="advanced">
+				<h3>Advanced Options</h3>
 
-                            }
-                        });
-                    }
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="link-expires">
+					<label class="custom-control-label" for="link-expires">Link Expires</label>
+				</div>
+				<!-- custom message to show once expired  ^^^-->
 
-                });
-            </script>
-        </div>
-    </div>
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="random-link">
+					<label class="custom-control-label" for="random-link">A/B testing links
+					</label>
+
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="password-protection">
+					<label class="custom-control-label" for="password-protection">Password Protection</label>
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="metadata">
+					<label class="custom-control-label" for="metadata">Add metadata
+
+					</label>
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="messagebeforeredirect">
+					<label class="custom-control-label" for="messagebeforeredirect">Custom Message before redirection</label>
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="timebeforeredirect">
+					<label class="custom-control-label" for="timebeforeredirect">Custom time before redirect</label>
+				</div>
+				<div class="collapse" id="password">
+					<label for="password">Password:</label>
+					<input id="password" type="password">
+				</div>
+			</div>
+			<button id="create" class="btn btn-success btn-block mt-3">Create short link</button>
+
+
+		</div>
+	</div>
+	<div class="footer">
+		<div class="footer-content text-center">
+			Copyright &copy; 2018 Jeffrey Meng
+		</div>
+	</div>
+	<script src="https://cdn.jeffkmeng.com/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://cdn.jeffkmeng.com/popperjs/1.12.9/popper.min.js"></script>
+	<script src="https://cdn.jeffkmeng.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jeffkmeng.com/clipboardjs/2.0.0/clipboard.min.js"></script>
+	<script src="https://cdn.jeffkmeng.com/clipboardtooltipper/1.0.0/clipboardtooltipper.js"></script>
+	<script>
+		var nameRegex = new RegExp("^[A-Za-z0-9][A-Za-z0-9-_ ]*$");
+		var urlRegex = new RegExp("^((https?|ftp|file):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
+		function showNameError(message) {
+			$("#name-validation").html(message);
+			$("#name").removeClass("is-valid");
+			$("#name").addClass("is-invalid");
+		}
+		function showNameSuccess() {
+			$("#name").removeClass("is-invalid");
+			$("#name").addClass("is-valid");
+		}
+		function hideNameColors() {
+			$("#name").removeClass("is-invalid");
+			$("#name").removeClass("is-valid");
+		}
+		function showLinkError(message) {
+			$("#link-validation").html(message);
+			$("#link").removeClass("is-valid");
+			$("#link").addClass("is-invalid");
+		}
+		function showLinkSuccess() {
+			$("#link").removeClass("is-invalid");
+			$("#link").addClass("is-valid");
+		}
+		function hideLinkColors() {
+			$("#link").removeClass("is-invalid");
+			$("#link").removeClass("is-valid");
+		}
+		function setButtonLoading(loading) {
+			if (loading) {
+				$("#create").attr("disabled", "");
+				$("#create").text("Loading...");
+			} else {
+				$("#create").removeAttr("disabled");
+				$("#create").text("Create short link");
+			}
+		}
+		function getSuccessAlert(message) {
+			return `
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>Success!</strong> ${message}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		`
+		}
+	</script>
+	<script>
+		clipboardTooltipper.init(".clip");
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		});
+		$("#name").keyup(function () {
+			name = $("#name").val();
+			if (name == "") {
+				hideNameColors();
+
+			} else if (!(nameRegex.test(name))) {
+				showNameError(`The short link <code>${name}</code> uses invalid charcters. You may only use letters, numbers, dashes, underscores, and spaces. The URL must start with a letter or number.`);
+			} else {
+				firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).once("value").then(function (snapshot) {
+					if (snapshot.val() != null) {
+						showNameError(`The short link <code>${name}</code> is taken.`);
+					} else {
+						showNameSuccess();
+					}
+				});
+			}
+		});
+		$("#link").keyup(function () {
+			link = $("#link").val();
+
+			if (link == "") {
+				hideLinkColors();
+
+			} else if (!(urlRegex.test(link))) {
+				showLinkError(`The URL <code>${link}</code> is invalid. Remeber to use http:// or https://. Only http, https, file, and ftp protocol urls are supported.`);
+			} else {
+
+				showLinkSuccess();
+
+			}
+		});
+		$("#advanced-options").click(function () {
+			if ($('#advanced').hasClass('collapse show')) {//it is shown if it has class in
+				$(this).text("Show Advanced Options");
+
+			} else {
+
+				$(this).text("Hide Advanced Options");
+			}
+
+		});
+		$("#create").click(function () {
+			//TODO: add command line to input field for admin
+			setButtonLoading(true);
+			var name = $("#name").val();
+			var link = $("#link").val();
+			if (link == "") {
+				showLinkError(`You must provide a link.`);
+				setButtonLoading(false);
+
+
+			} else if (!(urlRegex.test(link))) {
+				showLinkError(`The URL <code>${link}</code> is invalid. Remeber to use http:// or https://. Only http, https, file, and ftp protocol urls are supported.`);
+				setButtonLoading(false);
+			} else {
+
+				if (name == "") {
+					showNameError("You must provide a short link.");
+					setButtonLoading(false);
+
+				} else if (!(nameRegex.test(name))) {
+					showNameError(`The short link <code>${name}</code> uses invalid charcters. You may only use letters, numbers, dashes, underscores, and spaces. The URL must start with a letter or number.`);
+					setButtonLoading(false);
+				} else {
+					firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).once("value").then(function (snapshot) {
+						if (snapshot.val() != null) {
+							showNameError(`The short link <code>${name}</code> is taken.`);
+							setButtonLoading(false);
+						} else {
+							firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).set({
+								link: link,
+								created: Date(),
+								createdUTC: Date.now()
+							}).then(function () {
+								$("#alert-box").html(getSuccessAlert(`The link <a href="#" class="clip alert-link">https://jkmls.tk/${name}</a> now redirects to <a class="clip alert-link" href="#">${link}</a>.`));
+								$(".clip").each(function () {
+									$(this).tooltip({
+										trigger: "hover",
+										title: "Copy to clipboard"
+									});
+								});
+								setButtonLoading(false);
+							});
+						}
+					});
+				}
+
+			}
+
+
+
+		});
+
+	</script>
+
 </body>
 
 </html>
