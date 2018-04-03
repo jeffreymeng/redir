@@ -300,7 +300,7 @@
 								created: Date(),
 								createdUTC: Date.now()
 							}).then(function () {
-								$("#alert-box").html(getSuccessAlert(`The link <a data-toggle="tooltip" data-placement="top" title="Copy to clipboard" class="clip alert-link">https://jkmls.tk/${name}</a> now redirects to <a class="clip alert-link">${link}</a>.`));
+								$("#alert-box").html(getSuccessAlert(`The link <a href="#" class="clip alert-link">https://jkmls.tk/${name}</a> now redirects to <a class="clip alert-link" href="#">${link}</a>.`));
 								$(".clip").each(function () {
 									$(this).tooltip({
 										trigger: "hover",
