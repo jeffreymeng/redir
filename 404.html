@@ -19,16 +19,7 @@
         firebase.initializeApp(config);
     </script>
     <script>
-
-        if (window.location.hash !== "") {
-            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
-                if (snapshot.val() !== null) {
-                    window.location.href = snapshot.val();
-                } else {
-                    console.log("404");
-                    document.open();//clears everything
-
-                    document.write(`
+        var template = `
                 <html><head>
                 <link rel="stylesheet" type="text/css" href="https://cdn.jeffkmeng.com/bootstrap/4.0.0/css/bootstrap.min.css">
                 </head><body>
@@ -42,9 +33,22 @@
 
                     </div>
                 </div>
-                `)
+        `;
+
+        if (window.location.pathname.substring(1) !== "") {
+            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
+                if (snapshot.val() !== null) {
+                    window.location.href = snapshot.val();
+                } else {
+                    document.open();//clears everything
+
+                    document.write(template);
                 }
             });
+        } else {
+            document.open();//clears everything
+
+            document.write(template);
         }
 
     </script>
