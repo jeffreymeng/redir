@@ -37,7 +37,7 @@
 
         if (window.location.pathname.substring(1) !== "") {
             firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/value/").once("value").then(function (snapshot) {
-                if (snapshot.val() !== null) {
+                if (snapshot.val() != null && snapshot.val() != false) {
                     window.location.href = snapshot.val();
                 } else {
                     document.open();//clears everything
