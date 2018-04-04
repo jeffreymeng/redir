@@ -36,9 +36,9 @@
         `;
 
         if (window.location.pathname.substring(1) !== "") {
-            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.hash.substring(1)) + "/link/").once("value").then(function (snapshot) {
+            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.pathname.substring(1)) + "/link/").once("value").then(function (snapshot) {
                 console.log(snapshot.val());
-                console.log(encodeURIComponent(window.location.hash.substring(1)));
+                console.log(encodeURIComponent(window.location.pathname.substring(1)));
                 if (snapshot.val() != null && snapshot.val() != false) {//false for reserved words
                     window.location.href = snapshot.val();
                 } else {
