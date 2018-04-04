@@ -234,14 +234,14 @@
 			for (var i = 5; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
 			firebase.database().ref("/f/" + result).once("value").then(function (snapshot) {
 				if (snapshot.val() === null) {
-					callback(result, count);
+					callback(result);
 				}
 				else if (count >= 100) {
 
 
 					alert("An unknown error occured trying to generate a random link. Please try again later.");
 				} else {
-					generateId(callback, count);
+					generateId(callback);
 				}
 			});
 		}
