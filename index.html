@@ -97,7 +97,7 @@
 					</div>
 					<input type="text" class="form-control" id="name" aria-describedby="name-addon">
 					<div class="input-group-append">
-						<button class="btn btn-primary" type="button" tabindex="-1">Random</button>
+						<button class="btn btn-primary" type="button" tabindex="-1" id="random">Random</button>
 						<!-- we set tab index of the random button to -1 to allow the tab to move directly from short url to the link 
 						It is unlikely a user will press tab to get to the random button after filling out a short url.-->
 					</div>
@@ -130,6 +130,9 @@
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="random-link">
 					<label class="custom-control-label" for="random-link">A/B testing links
+						<span onclick="event.stopPropagation();">
+							<a href="#">(docs)</a>
+						</span>
 					</label>
 
 				</div>
@@ -137,10 +140,16 @@
 					<input type="checkbox" class="custom-control-input" id="password-protection">
 					<label class="custom-control-label" for="password-protection">Password Protection</label>
 				</div>
+				<div class="collapse" id="password">
+					<label for="password">Password:</label>
+					<input id="password" type="password">
+				</div>
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="metadata">
 					<label class="custom-control-label" for="metadata">Add metadata
-
+						<span onclick="event.stopPropagation();">
+							<a href="#">(docs)</a>
+						</span>
 					</label>
 				</div>
 				<div class="custom-control custom-checkbox">
@@ -151,10 +160,7 @@
 					<input type="checkbox" class="custom-control-input" id="timebeforeredirect">
 					<label class="custom-control-label" for="timebeforeredirect">Custom time before redirect</label>
 				</div>
-				<div class="collapse" id="password">
-					<label for="password">Password:</label>
-					<input id="password" type="password">
-				</div>
+
 			</div>
 			<button id="create" class="btn btn-success btn-block mt-3">Create short link</button>
 
@@ -225,6 +231,7 @@
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		});
+
 		$("#name").keyup(function () {
 			name = $("#name").val();
 			if (name == "") {
@@ -266,6 +273,29 @@
 			}
 
 		});
+		$("#random").click(function () {
+			var generated = false;
+			while (!generated) {
+				// no captial I, lowercase l, captial o, and no zero(0) to prevent confusion(in the url bar the first two and the last two look the same)
+				// generates 5 digit random ID from pool of 22 chars, not including the following four charcters: IlO0
+				var chars = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+				var result = "";
+				for (var i = 5; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+				//var invalid = true;
+				firebase.database().ref("/f/" + result).once("value").then(function (snapshot) {
+					if (snapshot.val() === null) {
+						generated = true;
+						$("#name").val(result);
+					}
+					else {
+						count++;
+						if (count >= 100) {
+							alert("An unknown error occured trying to generate a random link. Please try again later.");
+						}
+					}
+				});
+			}
+		})
 		$("#create").click(function () {
 			//TODO: add command line to input field for admin
 			setButtonLoading(true);
