@@ -225,6 +225,26 @@
 			</div>
 		`
 		}
+		function generateId(callback, count) {
+			if (!count) count = 0;
+			// no captial I, lowercase l, captial o, and no zero(0) to prevent confusion(in the url bar the first two and the last two look the same)
+			// generates 5 digit random ID from pool of 22 chars, not including the following four charcters: IlO0
+			var chars = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+			var result = "";
+			for (var i = 5; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+			firebase.database().ref("/f/" + result).once("value").then(function (snapshot) {
+				if (snapshot.val() === null) {
+					callback(result, count);
+				}
+				else if (count >= 100) {
+
+
+					alert("An unknown error occured trying to generate a random link. Please try again later.");
+				} else {
+					generateId(callback, count);
+				}
+			});
+		}
 	</script>
 	<script>
 		clipboardTooltipper.init(".clip");
@@ -274,28 +294,19 @@
 
 		});
 		$("#random").click(function () {
-			var generated = false;
-			while (!generated) {
-				// no captial I, lowercase l, captial o, and no zero(0) to prevent confusion(in the url bar the first two and the last two look the same)
-				// generates 5 digit random ID from pool of 22 chars, not including the following four charcters: IlO0
-				var chars = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
-				var result = "";
-				for (var i = 5; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-				//var invalid = true;
-				firebase.database().ref("/f/" + result).once("value").then(function (snapshot) {
-					if (snapshot.val() === null) {
-						generated = true;
-						$("#name").val(result);
-					}
-					else {
-						count++;
-						if (count >= 100) {
-							alert("An unknown error occured trying to generate a random link. Please try again later.");
-						}
-					}
-				});
-			}
+
+
+			//var invalid = true;
+			generateId(function (id) {
+
+				$("#name").val(id);
+
+
+			});
 		})
+
+
+
 		$("#create").click(function () {
 			//TODO: add command line to input field for admin
 			setButtonLoading(true);
