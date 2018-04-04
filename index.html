@@ -251,8 +251,7 @@
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
 		});
-
-		$("#name").keyup(function () {
+		function nameKeyup() {
 			name = $("#name").val();
 			if (name == "") {
 				hideNameColors();
@@ -268,7 +267,8 @@
 					}
 				});
 			}
-		});
+		}
+		$("#name").keyup(nameKeyup);
 		$("#link").keyup(function () {
 			link = $("#link").val();
 
@@ -300,6 +300,7 @@
 			generateId(function (id) {
 
 				$("#name").val(id);
+				nameKeyup();
 
 
 			});
