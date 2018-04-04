@@ -232,7 +232,7 @@
 			var chars = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
 			var result = "";
 			for (var i = 5; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-			firebase.database().ref("/f/" + result).once("value").then(function (snapshot) {
+			firebase.database().ref("/links/jmls/" + result).once("value").then(function (snapshot) {
 				if (snapshot.val() === null) {
 					callback(result);
 				}
