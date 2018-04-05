@@ -79,7 +79,8 @@
 			display: none;
 		}
 	</style>
-
+	<script src="https://cdn.jeffkmeng.com/fontawesome/5.0.9/pro/js/fa-brands.min.js"></script>
+	<script src="https://cdn.jeffkmeng.com/fontawesome/5.0.9/pro/js/fontawesome.min.js"></script>
 </head>
 
 <body>
@@ -143,6 +144,12 @@
 				<div class="collapse" id="password-protection-box">
 					<label for="password">Password:</label>
 					<input id="password" type="password" class="form-control">
+					<div class="input-group mb-3">
+						<input type="password" id="password" class="form-control" placeholder="password">
+						<div class="input-group-append">
+						  <button class="btn btn-outline-secondary" type="button"><span id="password-show"><i class="fa fab-eye"></i></span><span id="password-hide" class="hidden"><i class="fa fab-eye-slash"></i></span></button>
+						</div>
+					  </div>
 				</div>
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="metadata">
@@ -251,6 +258,16 @@
 		clipboardTooltipper.init(".clip");
 		$(function () {
 			$('[data-toggle="tooltip"]').tooltip()
+		});
+		$("#password-show").click(function() {
+			$("#password").attr("type", "text");
+			$("#password-show").addClass("hidden");
+			$("#password-hide").removeClass("hidden");
+		});
+		$("#password-hide").click(function() {
+			$("#password").attr("type", "text");
+			$("#password-hide").addClass("hidden");
+			$("#password-show").removeClass("hidden");
 		});
 		function nameKeyup() {
 			name = $("#name").val();
