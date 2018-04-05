@@ -142,7 +142,7 @@
 				</div>
 				<div class="collapse" id="password-protection-box">
 					<label for="password">Password:</label>
-					<input id="password" type="password">
+					<input id="password" type="password" class="form-control">
 				</div>
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="metadata">
@@ -180,7 +180,7 @@
 	<!--<script src="jkmls.js"></script>-->
 	<script>
 		var nameRegex = new RegExp("^[A-Za-z0-9][A-Za-z0-9-_ ]*$");
-		var urlRegex = new RegExp("^((https?|ftp|file):\\/\\/)(([^:\\n\\r]+):([^@\\n\\r]+)@)?((www\\.)?([^\\/\\n\\r]+))\\/?([^?\\n\\r]+)?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)$")
+		var urlRegex = new RegExp("^(\\b(https?|ftp|file):\\/\\/)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$")
 		function showNameError(message) {
 			$("#name-validation").html(message);
 			$("#name").removeClass("is-valid");
