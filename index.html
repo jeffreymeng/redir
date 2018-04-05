@@ -336,10 +336,15 @@
 							showNameError(`The short link <code>${name}</code> is taken.`);
 							setButtonLoading(false);
 						} else {
+							var options = {};
+							if ($("#metadata").is(':checked')) {
+								options.addMetadata = true;
+							}
 							firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).set({
 								link: link,
 								created: Date(),
-								createdUTC: Date.now()
+								createdUTC: Date.now(),
+								options:options
 							}).then(function () {
 								$("#alert-box").html(getSuccessAlert(`The link <a href="#" class="clip alert-link">https://jkmls.tk/${name}</a> now redirects to <a class="clip alert-link" href="#">${link}</a>. If you are embedding this link, use <a href="#" class="clip alert-link">https://jkmls.tk#${name}</a>`));
 								$(".clip").each(function () {

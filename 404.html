@@ -36,10 +36,29 @@
         `;
 
         if (window.location.pathname.substring(1) !== "") {
-            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.pathname.substring(1)) + "/link/").once("value").then(function (snapshot) {
-                
-                if (snapshot.val() != null && snapshot.val() != false) {//false for reserved words
-                    window.location.href = snapshot.val();
+            firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.pathname.substring(1)) + "/").once("value").then(function (snapshot) {
+                var data = snapshot.val();
+                if (data != null && data != false) {//false for reserved words, explicit just because
+                    if (data.options == null) {
+                        window.location.href = data.link;
+                    } else {
+                        if (data.options.addMetadata) {
+                            if (data.link.indexOf("?") <= -1) {
+                                data.link = data.link + "?"
+                            } else {
+                                data.link = data.link + "&"
+                            }
+                            data.link = data.link + "jkmlsmetadata=" + encodeURIComponent(JSON.stringify({
+                                timestamp:{
+                                    utc:Date.now(),
+                                    string:Date()
+                                },
+                                name:window.location.window.location.pathname.substring(1),
+                                redirLink:data.link
+                            }));
+                            window.location.href = data.link;
+                        }
+                    }
                 } else {
                     document.open();//clears everything
 
