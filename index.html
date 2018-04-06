@@ -259,15 +259,15 @@
 			$('[data-toggle="tooltip"]').tooltip()
 		});
 		$("#password-show").click(function() {
-			$("#password").attr("type", "text");
-			$("#password-show").addClass("hidden");
-			$("#password-hide").removeClass("hidden");
+			if ($("#password-show").hasClass("hidden")) {//going to be password-hide soon
+				$("#password").attr("type", "password");
+			} else {
+				$("#password").attr("type", "text");
+			}
+			$("#password-show").toggleClass("hidden");
+			$("#password-hide").toggleClass("hidden");
 		});
-		$("#password-hide").click(function() {
-			$("#password").attr("type", "text");
-			$("#password-hide").addClass("hidden");
-			$("#password-show").removeClass("hidden");
-		});
+		
 		function nameKeyup() {
 			name = $("#name").val();
 			if (name == "") {
