@@ -269,7 +269,14 @@
 			$("#password-show").toggleClass("hidden");
 			$("#password-hide").toggleClass("hidden");
 		});
-		
+		$("#password-protection-box").on("hide.bs.collapse", function () {
+			$("#password-protection").attr("disabled", "disabled");
+			$("#password-protection-box").on("hidden.bs.collapse", function () {
+				$("#password-protection").removeAttr("disabled");
+				$("#password-protection-box").off("hidden.bs.collapse");
+				$("#password-protection-box").off("hide.bs.collapse");
+			});
+		});
 		function nameKeyup() {
 			name = $("#name").val();
 			if (name == "") {
