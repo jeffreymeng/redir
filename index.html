@@ -368,10 +368,12 @@
 							showNameError(`The short link <code>${name}</code> is taken.`);
 							setButtonLoading(false);
 						} else {
-							var options = {};
-							if ($("#metadata").is(':checked')) {
-								options.addMetadata = true;
-							}
+							var options = {
+								addMetadata:$("#metadata").is(':checked'),
+								randomLink:$("#random-link").is(':checked')
+							};
+							
+							
 							firebase.database().ref("/links/jmls/" + decodeURIComponent(name)).set({
 								link: link,
 								created: Date(),
