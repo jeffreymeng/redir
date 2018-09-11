@@ -38,6 +38,7 @@
         if (window.location.pathname.substring(1) !== "") {
             firebase.database().ref("/links/jmls/" + encodeURIComponent(window.location.pathname.substring(1)) + "/").once("value").then(function (snapshot) {
                 var data = snapshot.val();
+                console.log(data);
                 if (data != null && data != false) {//false for reserved words, explicit just because
                     if (data.options == null) {
                         window.location.href = data.link;
