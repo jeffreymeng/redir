@@ -4,8 +4,8 @@
 
 <body>
     <h1>Loading...</h1>
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase-database.js"></script>
     <script>
         // Initialize Firebase
         var config = {
@@ -20,7 +20,7 @@
     </script>
     <script>
 		function setQuery(name, value, search) {
-			if (value !== null && value !== undefined ) value = "" + value;//we want falsey values to be used literally, as a string (e.g. 0 -> "0", false -> "false).
+			if (value !== null && value !== undefined ) value = "" + value;//we want falsey values to be used literally, as a string (e.g. 0 -> "0", false -> "false").
 			search = search || window.location.search;
 			let regex = new RegExp("([?;&])" + name + "[^&;]*[;&]?");
 			let query = search.replace(regex, "$1").replace(/&$/, '');
@@ -37,7 +37,7 @@
 
         var template = `
                 <html><head>
-                <link rel="stylesheet" type="text/css" href="https://cdn.jeffkmeng.com/library/bootstrap/4.0.0/css/bootstrap.min.css">
+                <link rel="stylesheet" type="text/css" href="https://cdn.jeffkmeng.com/library/bootstrap/4.1.3/css/bootstrap.min.css">
                 </head><body>
                 <div class="container">
                     <div class="col-lg-12">
