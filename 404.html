@@ -28,7 +28,7 @@
 			return (query.length > 2 ? query + "&" : "?") + (value ? name + "=" + value : '');
 		}
 
-		function setQueryUrl(name, value, url) {
+		function modifyQueryFromURL(name, value, url) {
 			var base = url.substring(0,(url.indexOf("?") > -1 ? url.indexOf("?") : undefined));
 			var query = setQuery(name, value, getQueryString(url));
 			var hash = (url.indexOf("#") > -1 ? url.substring(url.indexOf("#")) : "");
